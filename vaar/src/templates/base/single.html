@@ -1,0 +1,312 @@
+{% extends "base/base.html" %}
+
+{% block title %}{{post.title}}{% endblock title %}
+ {% block content %}
+
+ <style>
+    @import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap');
+
+    .h3{
+      font-family: 'PT serif, serif';
+      font-size: 2.55rem;
+      line-height: 2.6rem;
+      letter-spacing: -0.063;
+    }
+
+    p{
+      font-family: 'PT serif, serif';
+      line-height: 2rem;
+      letter-spacing: 1.3;
+    }
+
+    .avatar_single{
+      height: 30px;
+      width: 30px;
+      background-color: #000;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .avatar_comment{
+      height: 40px;
+      width: 40px;
+      background-color: #000;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+ </style>
+
+<div class="container">
+  <div class="row justify-content-md-center pt-5">
+    <div class="col-md-8 d-flex justify-content-between">
+        <h1 class="h3">{{post.title}}</h1>
+    </div>
+
+    <div class="col-md-8 d-flex justify-content-between pt-3">
+      <div class="d-flex">
+        <div><img class="avatar_single m-3" src="{{post.author.profile.avatar.url}}" alt=""></div>
+        <div class="pl-3 no-gutters">
+            <div class="col-12 no-gutters">{{post.author|title}}</div>
+            <div class="col-12 no-gutters smaller text-muted">{{post.publish|timesince}} ago</div>
+        </div>  
+      </div>
+    
+    
+    <div class="d-flex">
+       <div class="pr-4">
+          <span class="" id="like_count">{{post.like_count}}</span>
+          
+          {% if user.is_authenticated %}
+          <button class="btn btn-link text-dark p-0 border-0 btn-outline-light" id="like-button" value="{{post.id}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+              <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+            </svg>
+          </button>
+          </button>
+
+          {% else %}
+          <a href="{% url 'accounts:login' %}" class="btn btn-link text-dark p-0 border-0 btn-outline-light"  value="{{post.id}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-heart" viewBox="0 0 16 16">
+              <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+            </svg>
+          </a>
+          {% endif %}
+            
+
+          
+        </div>
+        
+
+       
+        
+        {% if fav %}
+        <div>
+         
+            <a href="{% url 'accounts:favourite_add' post.id %}" >
+              <button class="btn btn-link text-dark p-0 border-0 btn-outline-light" >
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bookmark-check" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M10.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+              </svg>
+              </button>
+            </a>
+        </div>
+        {% else %}
+
+        <div class="mr-3">
+          
+         <a href="{% url 'accounts:favourite_add' post.id %}">
+            <button class="btn btn-link text-dark p-0 border-0 btn-outline-light">
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-bookmark-plus" viewBox="0 0 16 16">
+                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.777.416L8 13.101l-5.223 2.815A.5.5 0 0 1 2 15.5V2zm2-1a1 1 0 0 0-1 1v12.566l4.723-2.482a.5.5 0 0 1 .554 0L13 14.566V2a1 1 0 0 0-1-1H4z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5V6H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V7H6a.5.5 0 0 1 0-1h1.5V4.5A.5.5 0 0 1 8 4z"/>
+              </svg>
+            </button>
+          </a>
+        </div>
+
+        {% endif %}
+    </div>
+  </div>
+
+      
+      <div class="col-md-8 justify-content-between">
+        <img class="card-img-top" src="{{ post.image.url }}" alt="">
+        <p>{{post.content|safe}}</p>
+      </div>
+
+      <div class="col-md-8 mx-auto">
+
+        <!-- comment count  -->
+        {% with comments.count as total_comments %}
+          <h4>
+            {{ total_comments }} Comment{{total_comments|pluralize}}
+          </h4>
+        {% endwith %}
+
+
+        
+        <!-- comments form -->
+
+        <form action="/api/create/comment/{{post.id}}" id="comment-form"  method="POST" > 
+          {% csrf_token %}
+
+            <select name="post" class="d-none" id="id_post">
+              <option value="{{post.id}}" selected="{{post.id}}"></option>
+            </select>
+
+      
+          {% if user.is_authenticated %}
+                <div class="d-flex mb-2">
+                  <img class="avatar_comment "style="margin-left: 15px;" src="{% for data in avatar %}{{data.avatar.url}}{% endfor %}" alt="">
+                  <input type="text" class="form-control" name="content" placeholder="Public Comment" required>
+                </div>
+          {% else %}
+                <div class="d-flex mb-2">
+                  <input type="text" class="form-control" name="content" placeholder="Public Comment" required>
+                </div>
+          {% endif %}
+        
+
+            
+
+            <div class="d-flex flex-row-reverse">
+                <button type="submit" class="btn btn-primary btn-sm btn-block" >Comment</button>
+            </div>
+        </form>
+       
+      </div>
+
+      <div id="comment-id">
+
+      </div>
+      
+  </div>
+</div>
+
+ <input class="d-none" style="display: none;" type="text" value="{{post.id}}" id="input_id">
+
+<script>
+
+  function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+ const postId = document.getElementById("input_id").value
+ const commentElContainer = document.getElementById("comment-id")
+
+
+
+function handleCommentSubmitForm(event){
+   event.preventDefault()
+   console.log(event.target)
+   const myForm = event.target
+   const myFormData = new FormData(myForm)
+   const url = myForm.getAttribute("action")
+   const method = myForm.getAttribute("method")
+   const xhr = new XMLHttpRequest()
+   xhr.responseType = "json"
+   xhr.open(method, url)
+   xhr.onload = function(){
+    
+
+    if (xhr.status == 201) {
+        const serverResponse = xhr.response
+        console.log(serverResponse)
+        const currentComment = formatCommentDiv(serverResponse)
+        let orginHtml = commentElContainer.innerHTML
+
+        commentElContainer.innerHTML = currentComment + orginHtml  
+
+        myForm.reset()
+    }else{
+      alert("You must have to login in")
+      window.location.href = "/account/login/"
+    }
+  
+
+   }
+
+  xhr.send(myFormData)
+ }
+
+
+const commentCreteFormDiv = document.getElementById("comment-form")
+commentCreteFormDiv.addEventListener("submit", handleCommentSubmitForm)
+
+
+ function handleActionBtn(comment_id, currentCount, action){
+          console.log(comment_id, currentCount)
+          const url = '/api/action/'
+          const method = 'POST'
+          const csrftoken = getCookie('csrftoken');
+          const data = JSON.stringify({
+              id: comment_id,
+              action: action
+          })
+
+          const xhr = new XMLHttpRequest()
+          xhr.open(method, url)
+          xhr.setRequestHeader("Content-Type", "Application/json")
+          xhr.setRequestHeader("X-CSRFToken", csrftoken )
+          xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+          xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+         
+          xhr.onload = function(){
+            if (xhr.status === 200) {
+              loadComment(commentElContainer)
+            }else if(xhr.status === 403){
+              alert("You must have to login in")
+              window.location.href = "/account/login"
+            }else{
+              alert("Internal Server erro")
+            }
+          }
+          xhr.send(data)
+          
+      }
+
+
+function LikeBtn(comment){
+  return "<button class='btn btn-primary btn-sm ' style='border-radius: 0%' onclick=handleActionBtn("+comment.id+","+comment.likes_comment+",'like')>"+comment.likes_comment+' like'+"</button>"
+}
+
+function UnLikeBtn(comment){
+  return "<button class='btn btn-outline-danger btn-sm' style='border-radius: 0%' onclick=handleActionBtn("+comment.id+","+comment.likes_comment+",'unlike')>"+' unlike'+"</button>"
+}
+
+
+function formatCommentDiv(comment){
+  return "<div class='col-md-8 mx-auto mb-4'><div><small>" +'{{comments.publish}}'+"</small><h6>"+comment.author+"</h6></div>" +comment.content+"<div>"+LikeBtn(comment)+
+    UnLikeBtn(comment)+"<hr /></div></div> "
+}
+
+
+
+
+  
+function loadComment(commentEl){
+    const xhr = new XMLHttpRequest()   
+    const method = 'GET'
+    const url = '/api/comment/'+postId
+    const responseType = "json"
+    xhr.responseType = responseType
+    xhr.open(method, url)
+    xhr.onload = function(){
+      commentlist = xhr.response
+      var finalcomment = ""
+      for (let i = 0; i < commentlist.length; i++) {
+          newCommentList = commentlist[i]
+          currentComment = formatCommentDiv(newCommentList)
+          finalcomment += currentComment
+      }
+
+      commentEl.innerHTML = finalcomment
+
+    }
+    xhr.send()
+}
+
+loadComment(commentElContainer)
+ 
+
+
+  
+ 
+
+</script>
+{% endblock content %}

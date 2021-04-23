@@ -1,0 +1,76 @@
+<style>
+  .avatar{
+    height: 30px;
+    width: 30px;
+    background-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+  }
+</style>
+{% if request.user.is_authenticated %}
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm ">
+    <h5 class="my-0 mr-md-auto font-weight-normal flex-grow-1 "><a href="/blog" class="text-dark text-decoration-none">Vaar</a></h5>
+    
+    <nav class="my-2 my-md-0 mr-md-3">
+      <a class="p-2 text-dark text-decoration-none" href="/">Home</a>
+      <!-- <a href="#" class="p-2 text-dark text-decoration-none">Features</a>
+      <a href="#" class="p-2 text-dark text-decoration-none">Entreprise</a>
+      <a href="#" class="p-2 text-dark text-decoration-none">Support</a> -->
+    </nav>
+
+  
+  <img class="avatar" src="{% for data in avatar %}{{data.avatar.url}}{% endfor %}" alt="">
+      
+ 
+  <ul class="navbar-nav">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Dashbord</a></li>
+        <li><a class="dropdown-item" href="{% url 'accounts:edit' %}">Update Profile</a></li>
+        <li><a class="dropdown-item" href="{% url 'accounts:favourite_list' %}">My Favourites</a></li>
+        <li><a class="dropdown-item" href="{% url 'password_change' %}">Change Password</a></li>
+        <div class="dropdown-divider"></div>
+        <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+      </ul>
+    </li>
+  </ul>
+</div>
+{% else %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Var</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+  
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Category
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+  
+              {% for category in category_list  %}
+                <li><a class="dropdown-item" href="/category/{{category.name}}">{{category.name|title}}</a></li>
+              {% endfor %}
+             
+            </ul>
+          </li>
+        </ul>
+        <form class="d-flex">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+{% endif %}
+  
+
